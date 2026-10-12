@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fruit to Root - Examine your heart through gospel reflection</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brandTeal: {
+              DEFAULT: '#0D8274',
+              dark: '#0A685D',
+              light: '#129A8A',
+              50: '#E6F5F3'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
+    
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: #f8fafc;
+      color: #1e293b;
+    }
+
+    .diagram-font {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    /* Print Formatting Rules - Completely Suppresses Browser Headers & Footers */
+    @page {
+      margin: 0; /* Removing page margins removes native browser headers/footers (URLs, dates, title) */
+      size: portrait;
+    }
+
+    @media print {
+      html, body {
+        background: white !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        color: #0f172a !important;
+        width: 100% !important;
+      }
+      
+      body * {
+        visibility: hidden !important;
+      }
+
+      #printWrapper, #printWrapper * {
+        visibility: visible !important;
+      }
+
+      #printWrapper {
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        padding: 12mm 15mm !important; /* Controlled inner margin for crisp paper edges */
+        box-shadow: none !important;
+        background: white !important;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .page-break-stage2 {
+        page-break-before: always !important;
+        break-before: page !important;
+        margin-top: 10mm !important;
+      }
+
+      .page-card {
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+    }
+
+    /* Custom scrollbar styling */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #0D8274;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col bg-slate-50">
+
+  <header class="bg-[#0D8274] text-white shadow-md sticky top-0 z-40 no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-3">
+      
+      <!-- Logo & Main Title -->
+      <div class="flex items-center space-x-3">
+        <div class="w-11 h-11 bg-white/10 rounded-2xl border border-white/20 flex items-center justify-center backdrop-blur-sm shadow-inner">
+          <i data-lucide="sprout" class="w-6 h-6 text-emerald-300"></i>
+        </div>
+        <div>
+          <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white leading-none">
+            Fruit to Root
+          </h1>
+          <p class="text-xs sm:text-sm text-teal-100 font-medium mt-1">
+            Examine your heart through gospel reflection
+          </p>
+        </div>
+      </div>
+
+      <!-- User Greeting Bar Input -->
+      <div class="flex items-center gap-2 bg-slate-900/25 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/20 shadow-inner">
+        <i data-lucide="user-check" class="w-4 h-4 text-emerald-300"></i>
+        <span class="text-sm font-medium text-teal-50">Hi</span>
+        <input 
+          type="text" 
+          id="userNameInput" 
+          placeholder="Enter Name" 
+          class="bg-transparent border-b border-teal-200/50 text-white font-semibold text-sm focus:outline-none focus:border-white px-1 w-24 sm:w-32 transition-all placeholder-teal-100/50"
+          onchange="saveUserName(this.value)"
+        />
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full">
+    
+    <!-- Sub-header bar with Gospel Explanation trigger -->
+    <div class="mb-6 bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-200/80 no-print flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div>
+        <div class="flex items-center gap-2 flex-wrap">
+          <p class="text-base sm:text-lg text-slate-900 font-bold">
+            <span id="greetingDisplay">Hi Friend</span>! Trace surface reactions to deep gospel roots.
+          </p>
+          <button 
+            type="button" 
+            onclick="openGospelExplanationModal()" 
+            class="w-6 h-6 rounded-full bg-teal-100 hover:bg-[#0D8274] text-[#0D8274] hover:text-white font-extrabold text-xs flex items-center justify-center transition shadow-sm border border-teal-300"
+            title="What is Fruit to Root & Why do we do it?"
+          >
+            ?
+          </button>
+        </div>
+        <p class="text-xs sm:text-sm text-slate-500 mt-1">
+          Step 1: Identify <span class="text-amber-700 font-semibold">Unhealthy Fruit</span> & Lie Roots. Step 2: Transform to <span class="text-emerald-700 font-semibold">Healthy Fruit</span> & Gospel Truths.
+        </p>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button 
+          onclick="toggleSavedDrawer()" 
+          class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-semibold rounded-xl transition shadow-sm"
+        >
+          <i data-lucide="folder-heart" class="w-4 h-4 text-emerald-400"></i>
+          <span>Saved Reflections (<span id="savedCount">0</span>)</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <div class="lg:col-span-5 bg-white rounded-2xl shadow-sm border border-slate-200/80 p-5 sm:p-6 no-print">
+        
+        <div class="flex items-center justify-between pb-4 border-b border-slate-100 mb-5">
+          <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
+            <i data-lucide="pen-tool" class="w-5 h-5 text-[#0D8274]"></i>
+            Reflection Editor
+          </h2>
+          <button 
+            type="button" 
+            onclick="loadSampleData()" 
+            class="text-xs text-[#0D8274] hover:text-teal-900 font-medium flex items-center gap-1 bg-teal-50 px-2.5 py-1 rounded-lg border border-teal-200 transition"
+          >
+            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-[#0D8274]"></i> Sample Text
+          </button>
+        </div>
+
+        <!-- Reflection Title Input -->
+        <div class="mb-5">
+          <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1.5">
+            Reflection Title / Situation
+          </label>
+          <input 
+            type="text" 
+            id="entryTitle" 
+            placeholder="e.g., Workplace Anxiety & Trust"
+            class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#0D8274] transition"
+            onfocus="autoClearField(this)"
+            oninput="updateDiagrams()"
+          />
+        </div>
+
+        <!-- Stage Selector Tabs -->
+        <div class="mb-6">
+          <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">
+            Active Editing Stage
+          </label>
+          <div class="grid grid-cols-2 gap-2 p-1.5 bg-slate-100 rounded-xl border border-slate-200/80">
+            <button 
+              type="button" 
+              id="stageUnhealthyTab"
+              onclick="switchEditStage('unhealthy')"
+              class="py-2.5 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm bg-amber-500 text-white"
+            >
+              <i data-lucide="alert-triangle" class="w-4 h-4"></i>
+              1. Unhealthy Tree
+            </button>
+            <button 
+              type="button" 
+              id="stageHealthyTab"
+              onclick="switchEditStage('healthy')"
+              class="py-2.5 px-3 rounded-lg text-xs font-bold transition text-slate-600 hover:text-slate-900"
+            >
+              <i data-lucide="sprout" class="w-4 h-4"></i>
+              2. Healthy Tree
+            </button>
+          </div>
+        </div>
+
+        <!-- Dynamic Form Container -->
+        <div id="stageFormContainer" class="space-y-5">
+          <!-- Rendered dynamically -->
+        </div>
+
+        <!-- Editor Buttons -->
+        <div class="flex flex-col sm:flex-row gap-2 pt-5 border-t border-slate-100 mt-6">
+          <button 
+            type="button" 
+            onclick="savePairedEntry()"
+            class="flex-1 py-3 px-4 bg-[#0D8274] hover:bg-[#0A685D] text-white rounded-xl font-bold text-sm transition shadow-md flex items-center justify-center gap-2"
+          >
+            <i data-lucide="save" class="w-4 h-4"></i>
+            Save Both Trees
+          </button>
+          <button 
+            type="button" 
+            onclick="clearAllFields()"
+            class="py-3 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-semibold text-sm transition flex items-center justify-center gap-1.5"
+            title="Reset All Inputs"
+          >
+            <i data-lucide="eraser" class="w-4 h-4"></i>
+            Reset
+          </button>
+        </div>
+
+      </div>
+
+      <div class="lg:col-span-7 flex flex-col gap-4">
+        
+        <!-- View & Print Controls -->
+        <div class="bg-white p-3.5 sm:p-4 rounded-2xl shadow-sm border border-slate-200/80 flex flex-wrap items-center justify-between gap-3 no-print">
+          <div class="flex items-center gap-2">
+            <i data-lucide="eye" class="w-5 h-5 text-[#0D8274]"></i>
+            <span class="font-bold text-slate-800 text-sm">Visual Preview</span>
+          </div>
+
+          <div class="flex items-center gap-1.5 bg-slate-100 p-1 rounded-xl border border-slate-200">
+            <button 
+              id="viewTabUnhealthy" 
+              onclick="setPreviewView('unhealthy')"
+              class="px-3 py-1.5 rounded-lg text-xs font-bold transition bg-white text-slate-800 shadow-sm"
+            >
+              Unhealthy
+            </button>
+            <button 
+              id="viewTabHealthy" 
+              onclick="setPreviewView('healthy')"
+              class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-slate-600 hover:text-slate-900"
+            >
+              Healthy
+            </button>
+            <button 
+              id="viewTabBoth" 
+              onclick="setPreviewView('both')"
+              class="px-3 py-1.5 rounded-lg text-xs font-bold transition text-slate-600 hover:text-slate-900"
+            >
+              Both Side-by-Side
+            </button>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button 
+              onclick="triggerPrint()"
+              class="px-4 py-2 bg-[#0D8274] hover:bg-[#0A685D] text-white rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-sm"
+            >
+              <i data-lucide="printer" class="w-4 h-4"></i>
+              Print Reflection
+            </button>
+          </div>
+        </div>
+
+        <!-- PRINT WRAPPER FOR PRINT VIEW -->
+        <div id="printWrapper" class="space-y-8">
+          
+          <!-- Printable Metadata Header -->
+          <div class="text-center pt-2 pb-3 border-b border-slate-200">
+            <h1 class="text-2xl font-black text-slate-900 tracking-tight">Fruit to Root Reflection</h1>
+            <p id="printSubtext" class="text-xs font-semibold text-slate-600 mt-1"></p>
+          </div>
+
+          <!-- Stage 1 SVG Container (Page 1) -->
+          <div 
+            id="unhealthyTreeContainer" 
+            class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-200/80 flex flex-col items-center justify-center overflow-x-auto page-card"
+          >
+            <div class="w-full flex items-center justify-between mb-2">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-extrabold bg-amber-100 text-amber-900 border border-amber-200">
+                <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-amber-600"></i>
+                STAGE 1: UNBELIEVING / UNHEALTHY TREE
+              </span>
+              <span class="text-xs font-semibold text-slate-400 no-print">Confession of Sin</span>
+            </div>
+
+            <div class="w-full max-w-[880px] aspect-[98/90] relative flex justify-center items-center">
+              <svg id="unhealthySvg" viewBox="0 0 980 900" class="w-full h-auto max-h-[900px] select-none" xmlns="http://www.w3.org/2000/svg">
+                <!-- SVG dynamically rendered -->
+              </svg>
+            </div>
+          </div>
+
+          <!-- Stage 2 SVG Container (Page 2) -->
+          <div 
+            id="healthyTreeContainer" 
+            class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-200/80 flex flex-col items-center justify-center overflow-x-auto page-card page-break-stage2"
+          >
+            <div class="w-full flex items-center justify-between mb-2">
+              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-extrabold bg-emerald-100 text-emerald-900 border border-emerald-200">
+                <i data-lucide="sprout" class="w-3.5 h-3.5 text-emerald-600"></i>
+                STAGE 2: BELIEVING / HEALTHY TREE
+              </span>
+              <span class="text-xs font-semibold text-slate-400 no-print">Confession of Faith</span>
+            </div>
+
+            <div class="w-full max-w-[880px] aspect-[98/90] relative flex justify-center items-center">
+              <svg id="healthySvg" viewBox="0 0 980 900" class="w-full h-auto max-h-[900px] select-none" xmlns="http://www.w3.org/2000/svg">
+                <!-- SVG dynamically rendered -->
+              </svg>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Gospel Explanation Modal -->
+  <div id="gospelModal" class="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-xl w-full shadow-2xl border border-slate-200 overflow-hidden">
+      <div class="bg-[#0D8274] text-white p-5 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center font-extrabold text-sm border border-white/20">
+            <i data-lucide="book-open" class="w-4 h-4 text-emerald-300"></i>
+          </div>
+          <h3 class="font-extrabold text-lg text-white">Understanding Fruit to Root</h3>
+        </div>
+        <button onclick="closeGospelExplanationModal()" class="p-1 hover:bg-white/10 rounded-lg transition text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="p-6 text-sm text-slate-700 space-y-4 max-h-[78vh] overflow-y-auto">
+        <div class="bg-teal-50/80 border border-teal-200/80 p-4 sm:p-5 rounded-xl">
+          <h4 class="font-bold text-[#0D8274] text-base mb-2 flex items-center gap-2">
+            <i data-lucide="help-circle" class="w-4 h-4 text-[#0D8274]"></i> What is Fruit to Root?
+          </h4>
+          <p class="text-slate-700 leading-relaxed text-xs sm:text-sm">
+            Fruit to Root is a gospel-centered reflection tool that helps you look beneath the surface of your behaviors, reactions, and emotions (the <strong>Fruit</strong>) to uncover the beliefs and heart attitudes driving them (the <strong>Root</strong>).
+          </p>
+          <p class="text-slate-700 leading-relaxed text-xs sm:text-sm mt-2.5">
+            Instead of focusing only on changing what you do, you'll explore what you believe about God, yourself, and your circumstances—and how the truth of the gospel speaks to those beliefs.
+          </p>
+        </div>
+
+        <div class="bg-slate-50 border border-slate-200 p-4 sm:p-5 rounded-xl space-y-3">
+          <h4 class="font-bold text-slate-900 text-base flex items-center gap-2">
+            <i data-lucide="heart" class="w-4 h-4 text-rose-500"></i> Why do we do Fruit to Root?
+          </h4>
+          <ul class="space-y-3 text-xs sm:text-sm text-slate-600">
+            <li class="flex items-start gap-2.5">
+              <span class="text-emerald-600 font-bold text-base leading-none">•</span>
+              <div>
+                <strong class="text-slate-900">Our actions reveal what's happening in our hearts.</strong> Anger, worry, fear, and the desire to control aren't just isolated reactions. They can reveal what we're believing about God, ourselves, or our circumstances.
+              </div>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <span class="text-emerald-600 font-bold text-base leading-none">•</span>
+              <div>
+                <strong class="text-slate-900">Real change begins with the heart.</strong> We don't overcome sinful patterns simply by trying harder to behave better. We bring our thoughts and beliefs into the light, confess where we've believed lies, and turn back to God's truth.
+              </div>
+            </li>
+            <li class="flex items-start gap-2.5">
+              <span class="text-emerald-600 font-bold text-base leading-none">•</span>
+              <div>
+                <strong class="text-slate-900">The gospel is the foundation for lasting change.</strong> Our hope isn't in our ability to fix ourselves, but in who God is and what He has done for us through Jesus Christ. As we grow in faith and learn to trust His truth, our lives begin to reflect the fruit of His Spirit.
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="p-4 bg-slate-50 border-t border-slate-100 text-right">
+        <button 
+          onclick="closeGospelExplanationModal()" 
+          class="px-5 py-2.5 bg-[#0D8274] hover:bg-[#0A685D] text-white rounded-xl text-xs font-bold transition shadow-sm"
+        >
+          I Understand
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Help Guidance Modal -->
+  <div id="helpModal" class="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-slate-200 overflow-hidden">
+      <div id="helpModalHeader" class="bg-[#0D8274] text-white p-4 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center font-bold text-xs">?</div>
+          <h3 id="helpModalTitle" class="font-bold text-base">Question Guidance</h3>
+        </div>
+        <button onclick="closeHelpModal()" class="p-1 hover:bg-white/10 rounded-lg transition text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div class="p-5 text-sm text-slate-700 space-y-3" id="helpModalBody">
+        <!-- Dynamic guidance content -->
+      </div>
+      <div class="p-3.5 bg-slate-50 border-t border-slate-100 text-right">
+        <button 
+          onclick="closeHelpModal()" 
+          id="helpModalBtn"
+          class="px-4 py-2 bg-[#0D8274] hover:bg-[#0A685D] text-white rounded-xl text-xs font-bold transition"
+        >
+          Got it
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Saved Drawer -->
+  <div id="savedDrawer" class="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm hidden transition-opacity">
+    <div class="fixed inset-y-0 right-0 max-w-md w-full bg-white shadow-2xl flex flex-col h-full border-l border-slate-200">
+      <div class="p-4 sm:p-5 bg-slate-900 text-white flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i data-lucide="bookmark" class="w-5 h-5 text-emerald-400"></i>
+          <h3 class="font-bold text-base">Saved Fruit to Roots</h3>
+        </div>
+        <button onclick="toggleSavedDrawer()" class="p-1 hover:bg-slate-800 rounded-lg transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="p-4 border-b border-slate-200 bg-slate-50">
+        <div class="relative">
+          <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-3"></i>
+          <input 
+            type="text" 
+            id="searchInput" 
+            placeholder="Search saved reflections..." 
+            oninput="renderSavedList()"
+            class="w-full pl-9 pr-3 py-2 bg-white border border-slate-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#0D8274]"
+          />
+        </div>
+      </div>
+
+      <div id="savedList" class="flex-1 overflow-y-auto p-4 space-y-3">
+        <!-- Entries rendered dynamically -->
+      </div>
+
+      <div class="p-4 border-t border-slate-200 bg-slate-50 text-xs text-slate-600 flex flex-col gap-2.5">
+        <div class="flex items-center justify-between text-slate-500">
+          <span class="flex items-center gap-1"><i data-lucide="hard-drive" class="w-3.5 h-3.5"></i> Saved in your browser</span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <button 
+            onclick="exportBackupJSON()"
+            class="py-2 px-3 bg-white hover:bg-teal-50 text-[#0D8274] border border-teal-200 rounded-xl font-bold transition flex items-center justify-center gap-1.5 shadow-sm"
+          >
+            <i data-lucide="download" class="w-3.5 h-3.5 text-[#0D8274]"></i>
+            Export Backup
+          </button>
+
+          <label class="py-2 px-3 bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 rounded-xl font-bold transition flex items-center justify-center gap-1.5 shadow-sm cursor-pointer">
+            <i data-lucide="upload" class="w-3.5 h-3.5 text-slate-500"></i>
+            Restore JSON
+            <input type="file" id="importJsonInput" accept=".json" class="hidden" onchange="importBackupJSON(event)"/>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast" class="fixed bottom-5 right-5 z-50 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-xl flex items-center gap-2 text-sm transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+    <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400" id="toastIcon"></i>
+    <span id="toastMsg">Action completed!</span>
+  </div>
+
+  <script>
+    const MAX_FRUITS = 6;
+
+    /* Clean Guidance Definitions */
+    const STAGE_GUIDANCE = {
+      unhealthy: {
+        themeColor: '#d97706',
+        fruit: {
+          title: "Unhealthy Fruit",
+          body: `
+            <div class="space-y-3">
+              <p class="text-xs text-slate-600 leading-relaxed">
+                <strong>What to reflect on:</strong> Identify the visible surface behaviors, emotional outbursts, or distressing thoughts you are experiencing right now.
+              </p>
+              <div>
+                <strong class="text-xs font-bold text-amber-800 uppercase tracking-wider block mb-1">COMMON EXAMPLES:</strong>
+                <ul class="list-disc pl-5 space-y-1 text-xs text-slate-700">
+                  <li>Fear of failure or rejection</li>
+                  <li>Desire for control or perfectionism</li>
+                  <li>Anxiety, worry, or restlessness</li>
+                  <li>Anger, impatience, or defensiveness</li>
+                </ul>
+              </div>
+            </div>
+          `
+        },
+        whoAmI: {
+          title: "1. WHO AM I?",
+          body: `
+            <div class="space-y-3">
+              <p class="text-xs text-slate-600 leading-relaxed">
+                <strong>What to reflect on:</strong> What lie are you believing about your identity, worth, or control?
+              </p>
+              <div>
+                <strong class="text-xs font-bold text-amber-800 uppercase tracking-wider block mb-1">UNHEALTHY LIES:</strong>
+                <ul class="list-disc pl-5 space-y-1.5 text-xs text-slate-700">
+                  <li>"I'm not in control, but I believe I have to be."</li>
+                  <li>"I am on my own and must control everything."</li>
+                  <li>"I am unloved and alone."</li>
+                </ul>
+              </div>
+            </div>
+          `
+        },
+        whatGodDone: {
+          title: "2. WHAT HAS GOD DONE?",
+          body: `
+            <div class="space-y-3">
+              <p class="text-xs text-slate-600 leading-relaxed">
+                <strong>What to reflect on:</strong> What lie are you believing regarding God's work, provision, or faithfulness?
+              </p>
+              <div>
+                <strong class="text-xs font-bold text-amber-800 uppercase tracking-wider block mb-1">UNHEALTHY LIES:</strong>
+                <ul class="list-disc pl-5 space-y-1.5 text-xs text-slate-700">
+                  <li>"I believe He has stopped helping me."</li>
+                  <li>"He holds back good things from my life."</li>
+                </ul>
+              </div>
+            </div>
+          `
+        },
+        whoIsGod: {
+          title: "3. WHO IS GOD?",
+          body: `
+            <div class="space-y-3">
+              <p class="text-xs text-slate-600 leading-relaxed">
+                <strong>What to reflect on:</strong> What false view of God's character is operating at the deep root of your heart?
+              </p>
+              <div>
+                <strong class="text-xs font-bold text-amber-800 uppercase tracking-wider block mb-1">UNHEALTHY LIES:</strong>
+                <ul class="list-disc pl-5 space-y-1.5 text-xs text-slate-700">
+                  <li>"He is distant, unloving, and unconcerned with my daily stress."</li>
+                  <li>"He is absent and ignoring my prayers."</li>
+                </ul>
+              </div>
+            </div>
+          `
+        }
+      },
+      healthy: {
+        themeColor: '#0D8274',
+        fruit: {
+          title: "Healthy Fruit",
+          body: `
+            <div class="space-y-3">
+              <p class="text-xs text-slate-600 leading-relaxed">
+                <strong>What to reflect on:</strong> What fruits of the Spirit emerge as your heart rests in God's truth?
+              </p>
+              <div>
+                <strong class="text-xs font-bold text-emerald-800 uppercase tracking-wider block mb-1">COMMON EXAMPLES:</strong>
+                <ul class="list-disc pl-5 space-y-1 text-xs text-slate-700">
+                  <li>Peace, Joy, Trust</li>
+                  <li>Patience, Love, Gentleness</li>
+                </ul>
+              </div>
+            </div>
+          `
+        },
+        whoAmI: {
+          title: "1. WHO AM I?",
+          body: `
+            <div class="space-y-3">
+              <p class="text-xs text-slate-600 leading-relaxed">
+                <strong>What to reflect on:</strong> What is your true identity in Christ based on the gospel?
+              </p>
+              <div>
+                <strong class="text-xs font-bold text-emerald-800 uppercase tracking-wider block mb-1">GOSPEL TRUTHS:</strong>
+                <ul class="list-disc pl-5 space-y-1.5 text-xs text-slate-700">
+                  <li>"I am loved and held by God. I don't need to control everything."</li>
+                  <li>"I am a child of God, completely accepted, and more than a conqueror through Him."</li>
+                </ul>
+              </div>
+            </div>
+          `
+        },
+        whatGodDone: {
+          title: "2. WHAT HAS GOD DONE?",
+          body: `
+            <div class="space-y-3">
+              <p class="text-xs text-slate-600 leading-relaxed">
+                <strong>What to reflect on:</strong> What has Jesus Christ finished on the cross and what does God actively promise to do for you?
+              </p>
+              <div>
+                <strong class="text-xs font-bold text-emerald-800 uppercase tracking-wider block mb-1">GOSPEL TRUTHS:</strong>
+                <ul class="list-disc pl-5 space-y-1.5 text-xs text-slate-700">
+                  <li>"Jesus bore my burdens on the cross. God faithfully provides for all my needs."</li>
+                  <li>"He canceled my debt and adopted me into His eternal family."</li>
+                </ul>
+              </div>
+            </div>
+          `
+        },
+        whoIsGod: {
+          title: "3. WHO IS GOD?",
+          body: `
+            <div class="space-y-3">
+              <p class="text-xs text-slate-600 leading-relaxed">
+                <strong>What to reflect on:</strong> What does Scripture say God's character is?
+              </p>
+              <div>
+                <strong class="text-xs font-bold text-emerald-800 uppercase tracking-wider block mb-1">GOSPEL TRUTHS:</strong>
+                <ul class="list-disc pl-5 space-y-1.5 text-xs text-slate-700">
+                  <li>"He is sovereign, infinitely loving, and faithfully present in every detail."</li>
+                  <li>"He is all-powerful, perfectly good, and completely trustworthy."</li>
+                  <li>"He is my refuge and ever-present help in trouble."</li>
+                </ul>
+              </div>
+            </div>
+          `
+        }
+      }
+    };
+
+    const SAMPLE_PAIRED_SESSION = {
+      title: "Workplace Anxiety & Trust",
+      unhealthy: {
+        fruits: ["DESIRE FOR CONTROL", "FEAR OF FAILURE", "ANXIETY", "IMPATIENCE"],
+        qWhoAmI: "I'm not in control.\nBut I believe I have to be.",
+        qWhatGodDone: "I believe he has stopped helping me. I'm carrying this burden all on my own.",
+        qWhoIsGod: "He is distant. He is unconcerned with my daily stress."
+      },
+      healthy: {
+        fruits: ["PEACE", "JOY", "TRUST", "PATIENCE"],
+        qWhoAmI: "I am loved and held by God.\nI don't need to control everything.",
+        qWhatGodDone: "Jesus bore my burdens on the cross. God provides for all my needs.",
+        qWhoIsGod: "He is sovereign, loving, and faithfully present in every detail."
+      }
+    };
+
+    let currentSession = JSON.parse(JSON.stringify(SAMPLE_PAIRED_SESSION));
+    let activeEditingStage = 'unhealthy';
+    let previewView = 'both';
+    let savedEntries = [];
+
+    let hasBeenCleared = {
+      title: false,
+      unhealthy_qWhoAmI: false, unhealthy_qWhatGodDone: false, unhealthy_qWhoIsGod: false,
+      healthy_qWhoAmI: false, healthy_qWhatGodDone: false, healthy_qWhoIsGod: false
+    };
+
+    window.onload = function() {
+      lucide.createIcons();
+      loadSavedUserName();
+      loadSavedEntriesFromStorage();
+      
+      document.getElementById('entryTitle').value = currentSession.title;
+      renderStageForm();
+      updateDiagrams();
+    };
+
+    function saveUserName(name) {
+      localStorage.setItem('fruitToRoot_userName', name);
+      updateGreeting(name);
+    }
+
+    function loadSavedUserName() {
+      const saved = localStorage.getItem('fruitToRoot_userName') || '';
+      document.getElementById('userNameInput').value = saved;
+      updateGreeting(saved);
+    }
+
+    function updateGreeting(name) {
+      const display = document.getElementById('greetingDisplay');
+      display.innerText = name.trim() ? `Hi ${name.trim()}` : 'Hi Friend';
+    }
+
+    function switchEditStage(stage) {
+      activeEditingStage = stage;
+
+      const unhealthyTab = document.getElementById('stageUnhealthyTab');
+      const healthyTab = document.getElementById('stageHealthyTab');
+
+      if (stage === 'unhealthy') {
+        unhealthyTab.className = "py-2.5 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm bg-amber-500 text-white";
+        healthyTab.className = "py-2.5 px-3 rounded-lg text-xs font-bold transition text-slate-600 hover:text-slate-900";
+      } else {
+        healthyTab.className = "py-2.5 px-3 rounded-lg text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm bg-emerald-600 text-white";
+        unhealthyTab.className = "py-2.5 px-3 rounded-lg text-xs font-bold transition text-slate-600 hover:text-slate-900";
+      }
+
+      renderStageForm();
+    }
+
+    function setPreviewView(view) {
+      previewView = view;
+      
+      const tabUnhealthy = document.getElementById('viewTabUnhealthy');
+      const tabHealthy = document.getElementById('viewTabHealthy');
+      const tabBoth = document.getElementById('viewTabBoth');
+
+      const activeClass = "px-3 py-1.5 rounded-lg text-xs font-bold transition bg-white text-slate-900 shadow-sm";
+      const inactiveClass = "px-3 py-1.5 rounded-lg text-xs font-bold transition text-slate-600 hover:text-slate-900";
+
+      tabUnhealthy.className = view === 'unhealthy' ? activeClass : inactiveClass;
+      tabHealthy.className = view === 'healthy' ? activeClass : inactiveClass;
+      tabBoth.className = view === 'both' ? activeClass : inactiveClass;
+
+      const unhealthyContainer = document.getElementById('unhealthyTreeContainer');
+      const healthyContainer = document.getElementById('healthyTreeContainer');
+
+      if (view === 'unhealthy') {
+        unhealthyContainer.style.display = 'flex';
+        healthyContainer.style.display = 'none';
+      } else if (view === 'healthy') {
+        unhealthyContainer.style.display = 'none';
+        healthyContainer.style.display = 'flex';
+      } else {
+        unhealthyContainer.style.display = 'flex';
+        healthyContainer.style.display = 'flex';
+      }
+    }
+
+    function autoClearField(field) {
+      const fieldId = field.id;
+      if (!fieldId) return;
+
+      const isUnhealthy = activeEditingStage === 'unhealthy';
+      const sampleObj = isUnhealthy ? SAMPLE_PAIRED_SESSION.unhealthy : SAMPLE_PAIRED_SESSION.healthy;
+      const key = `${activeEditingStage}_${fieldId}`;
+
+      let isSample = false;
+      if (fieldId === 'qWhoAmI' && field.value.trim() === sampleObj.qWhoAmI.trim()) isSample = true;
+      if (fieldId === 'qWhatGodDone' && field.value.trim() === sampleObj.qWhatGodDone.trim()) isSample = true;
+      if (fieldId === 'qWhoIsGod' && field.value.trim() === sampleObj.qWhoIsGod.trim()) isSample = true;
+      if (fieldId === 'entryTitle' && field.value.trim() === SAMPLE_PAIRED_SESSION.title.trim()) isSample = true;
+
+      if (isSample || !hasBeenCleared[key]) {
+        field.value = '';
+        hasBeenCleared[key] = true;
+        updateDiagrams();
+      }
+    }
+
+    function autoClearFruit(input, index) {
+      const isUnhealthy = activeEditingStage === 'unhealthy';
+      const sampleFruits = isUnhealthy ? SAMPLE_PAIRED_SESSION.unhealthy.fruits : SAMPLE_PAIRED_SESSION.healthy.fruits;
+      
+      if (sampleFruits[index] && input.value.trim() === sampleFruits[index].trim()) {
+        input.value = '';
+        updateFruitValue(index, '');
+      }
+    }
+
+    function renderStageForm() {
+      const container = document.getElementById('stageFormContainer');
+      const isUnhealthy = activeEditingStage === 'unhealthy';
+      const data = isUnhealthy ? currentSession.unhealthy : currentSession.healthy;
+
+      const accentColor = isUnhealthy ? 'amber' : 'emerald';
+
+      const fruitCardHTML = `
+        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+          <div class="flex items-center justify-between mb-2">
+            <label class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="apple" class="w-4 h-4 text-${accentColor}-600"></i>
+              ${isUnhealthy ? 'Unhealthy Fruits' : 'Healthy Fruits'} (Max 6)
+            </label>
+            <div class="flex items-center gap-2">
+              <span class="text-[11px] font-bold px-2 py-0.5 rounded-full ${data.fruits.length >= MAX_FRUITS ? 'bg-amber-100 text-amber-800' : 'bg-slate-200 text-slate-700'}">
+                ${data.fruits.length} / ${MAX_FRUITS}
+              </span>
+              <button 
+                type="button" 
+                onclick="showHelpModal('fruit')" 
+                class="w-5 h-5 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs flex items-center justify-center transition"
+              >
+                ?
+              </button>
+            </div>
+          </div>
+
+          <div id="fruitInputsList" class="space-y-2 mb-3">
+            ${data.fruits.map((f, i) => `
+              <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded-full bg-${accentColor}-100 text-${accentColor}-800 text-xs font-bold flex items-center justify-center flex-shrink-0">
+                  ${i + 1}
+                </div>
+                <input 
+                  type="text" 
+                  value="${escapeHtml(f)}" 
+                  onfocus="autoClearFruit(this, ${i})"
+                  oninput="updateFruitValue(${i}, this.value)"
+                  placeholder="e.g., ${isUnhealthy ? 'FEAR' : 'PEACE'}" 
+                  class="flex-1 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-bold uppercase text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0D8274]"
+                />
+                ${data.fruits.length > 1 ? `
+                  <button type="button" onclick="removeFruitInput(${i})" class="p-1 text-slate-400 hover:text-rose-500 transition">
+                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                  </button>
+                ` : ''}
+              </div>
+            `).join('')}
+          </div>
+
+          ${data.fruits.length < MAX_FRUITS ? `
+            <button 
+              type="button" 
+              onclick="addFruitInput()"
+              class="w-full py-2 border-2 border-dashed border-slate-300 hover:border-[#0D8274] text-[#0D8274] hover:bg-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5"
+            >
+              <i data-lucide="plus" class="w-4 h-4"></i> Add Fruit Circle
+            </button>
+          ` : `
+            <p class="text-[11px] text-slate-400 text-center font-medium">Maximum 6 fruit limit reached</p>
+          `}
+        </div>
+      `;
+
+      const qWhoIsGodHTML = `
+        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+          <div class="flex items-center justify-between mb-1.5">
+            <label class="text-xs font-bold text-slate-800 flex items-center gap-1">
+              3. WHO IS GOD?
+            </label>
+            <button 
+              type="button" 
+              onclick="showHelpModal('whoIsGod')" 
+              class="w-5 h-5 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs flex items-center justify-center transition"
+            >
+              ?
+            </button>
+          </div>
+          <textarea 
+            id="qWhoIsGod" 
+            rows="2"
+            class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#0D8274] resize-none transition"
+            placeholder="${isUnhealthy ? 'What false view of God character are you harboring?' : 'What does Scripture say God character is?'}"
+            onfocus="autoClearField(this)"
+            oninput="updateDiagrams()"
+          >${escapeHtml(data.qWhoIsGod)}</textarea>
+        </div>
+      `;
+
+      const qWhatGodDoneHTML = `
+        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+          <div class="flex items-center justify-between mb-1.5">
+            <label class="text-xs font-bold text-slate-800 flex items-center gap-1">
+              2. WHAT HAS GOD DONE?
+            </label>
+            <button 
+              type="button" 
+              onclick="showHelpModal('whatGodDone')" 
+              class="w-5 h-5 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs flex items-center justify-center transition"
+            >
+              ?
+            </button>
+          </div>
+          <textarea 
+            id="qWhatGodDone" 
+            rows="3"
+            class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#0D8274] resize-none transition"
+            placeholder="${isUnhealthy ? 'What lie regarding God work or provision are you believing?' : 'What has Jesus finished on the cross for you?'}"
+            onfocus="autoClearField(this)"
+            oninput="updateDiagrams()"
+          >${escapeHtml(data.qWhatGodDone)}</textarea>
+        </div>
+      `;
+
+      const qWhoAmIHTML = `
+        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+          <div class="flex items-center justify-between mb-1.5">
+            <label class="text-xs font-bold text-slate-800 flex items-center gap-1">
+              1. WHO AM I?
+            </label>
+            <button 
+              type="button" 
+              onclick="showHelpModal('whoAmI')" 
+              class="w-5 h-5 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs flex items-center justify-center transition"
+            >
+              ?
+            </button>
+          </div>
+          <textarea 
+            id="qWhoAmI" 
+            rows="2"
+            class="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#0D8274] resize-none transition"
+            placeholder="${isUnhealthy ? 'What lie about your identity are you believing?' : 'What is your true identity in Christ?'}"
+            onfocus="autoClearField(this)"
+            oninput="updateDiagrams()"
+          >${escapeHtml(data.qWhoAmI)}</textarea>
+        </div>
+      `;
+
+      if (isUnhealthy) {
+        // Stage 1 Top-Down Order
+        container.innerHTML = `
+          ${fruitCardHTML}
+          <div class="space-y-3.5">
+            <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+              <i data-lucide="git-commit" class="w-4 h-4 text-[#0D8274]"></i>
+              Trunk Heart Reflections
+            </h3>
+            ${qWhoAmIHTML}
+            ${qWhatGodDoneHTML}
+            ${qWhoIsGodHTML}
+          </div>
+        `;
+      } else {
+        // Stage 2 Bottom-Up Order
+        container.innerHTML = `
+          <div class="space-y-3.5">
+            <div class="flex items-center justify-between">
+              <h3 class="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+                <i data-lucide="git-commit" class="w-4 h-4 text-emerald-600"></i>
+                Root & Trunk Faith Reflections (Bottom-Up)
+              </h3>
+              <span class="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                Work Foundation Upward
+              </span>
+            </div>
+            ${qWhoIsGodHTML}
+            ${qWhatGodDoneHTML}
+            ${qWhoAmIHTML}
+          </div>
+          ${fruitCardHTML}
+        `;
+      }
+
+      lucide.createIcons();
+    }
+
+    function addFruitInput() {
+      const data = activeEditingStage === 'unhealthy' ? currentSession.unhealthy : currentSession.healthy;
+      if (data.fruits.length < MAX_FRUITS) {
+        data.fruits.push('');
+        renderStageForm();
+        updateDiagrams();
+      }
+    }
+
+    function removeFruitInput(index) {
+      const data = activeEditingStage === 'unhealthy' ? currentSession.unhealthy : currentSession.healthy;
+      data.fruits.splice(index, 1);
+      renderStageForm();
+      updateDiagrams();
+    }
+
+    function updateFruitValue(index, val) {
+      const data = activeEditingStage === 'unhealthy' ? currentSession.unhealthy : currentSession.healthy;
+      data.fruits[index] = val;
+      updateDiagrams();
+    }
+
+    function loadSampleData() {
+      currentSession = JSON.parse(JSON.stringify(SAMPLE_PAIRED_SESSION));
+      document.getElementById('entryTitle').value = currentSession.title;
+      hasBeenCleared = {
+        title: false,
+        unhealthy_qWhoAmI: false, unhealthy_qWhatGodDone: false, unhealthy_qWhoIsGod: false,
+        healthy_qWhoAmI: false, healthy_qWhatGodDone: false, healthy_qWhoIsGod: false
+      };
+      renderStageForm();
+      updateDiagrams();
+      showToast('Sample reflection loaded!');
+    }
+
+    function clearAllFields() {
+      currentSession = {
+        title: '',
+        unhealthy: { fruits: [''], qWhoAmI: '', qWhatGodDone: '', qWhoIsGod: '' },
+        healthy: { fruits: [''], qWhoAmI: '', qWhatGodDone: '', qWhoIsGod: '' }
+      };
+      document.getElementById('entryTitle').value = '';
+      hasBeenCleared = {
+        title: true,
+        unhealthy_qWhoAmI: true, unhealthy_qWhatGodDone: true, unhealthy_qWhoIsGod: true,
+        healthy_qWhoAmI: true, healthy_qWhatGodDone: true, healthy_qWhoIsGod: true
+      };
+      renderStageForm();
+      updateDiagrams();
+      showToast('Form reset');
+    }
+
+    function updateDiagrams() {
+      currentSession.title = document.getElementById('entryTitle').value;
+
+      const targetData = activeEditingStage === 'unhealthy' ? currentSession.unhealthy : currentSession.healthy;
+      const qWhoAmIEl = document.getElementById('qWhoAmI');
+      const qWhatGodDoneEl = document.getElementById('qWhatGodDone');
+      const qWhoIsGodEl = document.getElementById('qWhoIsGod');
+
+      if (qWhoAmIEl) targetData.qWhoAmI = qWhoAmIEl.value;
+      if (qWhatGodDoneEl) targetData.qWhatGodDone = qWhatGodDoneEl.value;
+      if (qWhoIsGodEl) targetData.qWhoIsGod = qWhoIsGodEl.value;
+
+      const userName = document.getElementById('userNameInput').value.trim();
+      const title = currentSession.title.trim() || 'Untitled Reflection';
+      const printSubtext = document.getElementById('printSubtext');
+      
+      if (printSubtext) {
+        printSubtext.innerText = `${userName ? 'Reflected by: ' + userName + ' | ' : ''}Date: ${new Date().toLocaleDateString()} | Title: ${title}`;
+      }
+
+      renderCustomTreeSVG('unhealthySvg', currentSession.unhealthy, false);
+      renderCustomTreeSVG('healthySvg', currentSession.healthy, true);
+    }
+
+    function renderCustomTreeSVG(svgId, stageData, isHealthy) {
+      const svg = document.getElementById(svgId);
+      if (!svg) return;
+
+      const primaryColor = isHealthy ? '#059669' : '#d97706';
+      const badgeBg = isHealthy ? '#ecfdf5' : '#fffbe2';
+      const badgeText = isHealthy ? 'CONFESSION OF FAITH' : 'CONFESSION OF SIN';
+
+      const fruits = stageData.fruits || [];
+      const positions = getFruitPositionsCustom(fruits.length);
+
+      let fruitNodesSVG = '';
+      fruits.forEach((fText, i) => {
+        if (!fText.trim()) return;
+        const pos = positions[i] || { x: 490, y: 155, r: 52 };
+        const lines = wrapText(fText, 12);
+
+        let textTspans = '';
+        const startY = pos.y - ((lines.length - 1) * 8);
+        lines.forEach((line, lineIdx) => {
+          textTspans += `<tspan x="${pos.x}" y="${startY + (lineIdx * 15)}">${escapeHtml(line)}</tspan>`;
+        });
+
+        fruitNodesSVG += `
+          <!-- Stem -->
+          <path d="M ${pos.x},${pos.y - pos.r} Q ${pos.x + 6},${pos.y - pos.r - 14} ${pos.x},${pos.y - pos.r - 22}" fill="none" stroke="${primaryColor}" stroke-width="4" stroke-linecap="round"/>
+          
+          <!-- Circle -->
+          <circle cx="${pos.x + 3}" cy="${pos.y + 3}" r="${pos.r}" fill="rgba(15,23,42,0.06)" />
+          <circle cx="${pos.x}" cy="${pos.y}" r="${pos.r}" fill="#ffffff" stroke="${primaryColor}" stroke-width="5"/>
+          
+          <!-- Label -->
+          <text x="${pos.x}" y="${pos.y}" fill="${primaryColor}" font-size="12" font-weight="800" text-anchor="middle" dominant-baseline="middle" class="diagram-font">
+            ${textTspans}
+          </text>
+        `;
+      });
+
+      const whoAmILines = wrapText(stageData.qWhoAmI || '', 26);
+      const godDoneLines = wrapText(stageData.qWhatGodDone || '', 26);
+      const whoIsGodLines = wrapText(stageData.qWhoIsGod || '', 26);
+
+      const badgeX = isHealthy ? 825 : 110;
+      const pointRight = isHealthy;
+
+      svg.innerHTML = `
+        <defs>
+          <linearGradient id="trunkGrad_${svgId}" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="${primaryColor}" stop-opacity="0.12"/>
+            <stop offset="100%" stop-color="${primaryColor}" stop-opacity="0.03"/>
+          </linearGradient>
+        </defs>
+
+        <!-- CANOPY CLOUD -->
+        <g id="CanopyGroup">
+          <path d="M 240,240 
+                   C 140,230 100,140 160,80 
+                   C 210,30 320,30 390,60 
+                   C 440,15 540,15 590,60 
+                   C 660,30 770,30 820,80 
+                   C 880,140 840,230 740,240 
+                   C 640,260 340,260 240,240 Z" 
+                fill="url(#trunkGrad_${svgId})" stroke="${primaryColor}" stroke-width="5" stroke-linejoin="round"/>
+        </g>
+
+        <!-- FRUITS -->
+        <g id="FruitNodesGroup">
+          ${fruitNodesSVG}
+        </g>
+
+        <!-- TRUNK -->
+        <g id="TrunkGroup">
+          <path d="M 450,242 L 450,650 C 435,690 330,730 250,750 L 730,750 C 650,730 545,690 530,650 L 530,242 Z" 
+                fill="none" stroke="${primaryColor}" stroke-width="5" stroke-linejoin="round"/>
+        </g>
+
+        <!-- TRUNK QUESTION BANNERS -->
+        <g id="TrunkBanners" class="diagram-font">
+          <g transform="translate(390, 360)">
+            <rect x="0" y="0" width="200" height="44" rx="8" fill="${primaryColor}" />
+            <text x="100" y="27" fill="white" font-size="16" font-weight="800" text-anchor="middle">WHO AM I?</text>
+          </g>
+
+          <g transform="translate(390, 475)">
+            <rect x="0" y="0" width="200" height="52" rx="8" fill="${primaryColor}" />
+            <text x="100" y="24" fill="white" font-size="15" font-weight="800" text-anchor="middle">WHAT HAS</text>
+            <text x="100" y="42" fill="white" font-size="15" font-weight="800" text-anchor="middle">GOD DONE?</text>
+          </g>
+
+          <g transform="translate(390, 600)">
+            <rect x="0" y="0" width="200" height="44" rx="8" fill="${primaryColor}" />
+            <text x="100" y="27" fill="white" font-size="16" font-weight="800" text-anchor="middle">WHO IS GOD?</text>
+          </g>
+        </g>
+
+        <!-- CALLOUT TEXT RESPONSES -->
+        <g id="TrunkCallouts">
+          ${renderCalloutBracket(390, 382, whoAmILines, pointRight, primaryColor)}
+          ${renderCalloutBracket(390, 501, godDoneLines, pointRight, primaryColor)}
+          ${renderCalloutBracket(390, 622, whoIsGodLines, pointRight, primaryColor)}
+        </g>
+
+        <!-- SIDE BADGE PILL -->
+        <g id="SideBadge" transform="translate(${badgeX}, 360)">
+          <line x1="0" y1="-10" x2="0" y2="290" stroke="${primaryColor}" stroke-width="4" stroke-dasharray="6,4"/>
+          <path d="M -8,2 L 0,-10 L 8,2" fill="${primaryColor}"/>
+          <path d="M -8,278 L 0,290 L 8,278" fill="${primaryColor}"/>
+
+          <rect x="-22" y="50" width="44" height="180" rx="14" ry="14" fill="${badgeBg}" stroke="${primaryColor}" stroke-width="3"/>
+          
+          <text x="0" y="140" fill="${primaryColor}" font-size="12" font-weight="800" text-anchor="middle" dominant-baseline="central" class="diagram-font" transform="rotate(-90 0 140)" letter-spacing="1.2">
+            ${badgeText}
+          </text>
+        </g>
+
+        <!-- REPENTANCE PATHWAYS -->
+        <g id="RepentancePathway">
+          <line x1="100" y1="750" x2="880" y2="750" stroke="${primaryColor}" stroke-width="3"/>
+
+          ${!isHealthy ? `
+            <path d="M 490,660 
+                     L 490,795 
+                     Q 490,820 520,820 
+                     L 780,820 
+                     L 780,800 
+                     L 830,830 
+                     L 780,860 
+                     L 780,840 
+                     L 520,840 
+                     Q 470,840 470,795 
+                     L 470,660 Z" 
+                  fill="#ffffff" stroke="${primaryColor}" stroke-width="4" stroke-linejoin="round"/>
+            <text x="640" y="836" fill="${primaryColor}" font-size="15" font-weight="800" text-anchor="middle" class="diagram-font" letter-spacing="2">
+              REPENTANCE ➔
+            </text>
+          ` : `
+            <path d="M 150,820 
+                     L 460,820 
+                     Q 490,820 490,795 
+                     L 490,695 
+                     L 470,695 
+                     L 490,660 
+                     L 510,695 
+                     L 490,695 
+                     L 490,795 
+                     Q 490,840 460,840 
+                     L 150,840 Z" 
+                  fill="#ffffff" stroke="${primaryColor}" stroke-width="4" stroke-linejoin="round"/>
+            <text x="310" y="836" fill="${primaryColor}" font-size="15" font-weight="800" text-anchor="middle" class="diagram-font" letter-spacing="2">
+              ➔ REPENTANCE & FAITH
+            </text>
+          `}
+        </g>
+      `;
+    }
+
+    function getFruitPositionsCustom(count) {
+      const presets = {
+        1: [{ x: 490, y: 140, r: 52 }],
+        2: [{ x: 360, y: 140, r: 52 }, { x: 620, y: 140, r: 52 }],
+        3: [{ x: 320, y: 145, r: 50 }, { x: 490, y: 110, r: 46 }, { x: 660, y: 145, r: 50 }],
+        4: [{ x: 270, y: 155, r: 48 }, { x: 410, y: 110, r: 44 }, { x: 570, y: 110, r: 44 }, { x: 710, y: 155, r: 48 }],
+        5: [{ x: 250, y: 160, r: 46 }, { x: 370, y: 105, r: 42 }, { x: 490, y: 155, r: 44 }, { x: 610, y: 105, r: 42 }, { x: 730, y: 160, r: 46 }],
+        6: [{ x: 240, y: 165, r: 44 }, { x: 340, y: 105, r: 40 }, { x: 440, y: 170, r: 42 }, { x: 540, y: 170, r: 42 }, { x: 640, y: 105, r: 40 }, { x: 740, y: 165, r: 44 }]
+      };
+      return presets[count] || presets[1];
+    }
+
+    function renderCalloutBracket(bannerX, bannerCenterY, textLines, pointRight, color) {
+      const startX = pointRight ? bannerX + 200 : bannerX;
+      const bracketWidth = pointRight ? 24 : -24;
+      const textX = pointRight ? startX + 38 : startX - 38;
+      const textAnchor = pointRight ? 'start' : 'end';
+
+      const totalHeight = Math.max(38, textLines.length * 16);
+      const topY = bannerCenterY - (totalHeight / 2);
+      const bottomY = bannerCenterY + (totalHeight / 2);
+
+      const bracketPath = `
+        M ${startX},${topY} 
+        H ${startX + bracketWidth} 
+        V ${bottomY} 
+        H ${startX}
+        M ${startX + bracketWidth},${bannerCenterY} 
+        H ${startX + bracketWidth + (pointRight ? 12 : -12)}
+      `;
+
+      let tSpans = '';
+      const lineStartY = bannerCenterY - ((textLines.length - 1) * 8);
+      textLines.forEach((line, idx) => {
+        tSpans += `<tspan x="${textX}" y="${lineStartY + (idx * 16)}">${escapeHtml(line)}</tspan>`;
+      });
+
+      return `
+        <path d="${bracketPath}" fill="none" stroke="${color}" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <text y="${bannerCenterY}" fill="${color}" font-size="13" font-weight="700" text-anchor="${textAnchor}" dominant-baseline="middle" class="diagram-font">
+          ${tSpans}
+        </text>
+      `;
+    }
+
+    function wrapText(text, maxChars) {
+      if (!text) return [''];
+      const rawLines = text.split('\n');
+      const formattedLines = [];
+
+      rawLines.forEach(rawLine => {
+        const words = rawLine.split(' ');
+        let currentLine = '';
+
+        words.forEach(word => {
+          if ((currentLine + ' ' + word).trim().length <= maxChars) {
+            currentLine = (currentLine + ' ' + word).trim();
+          } else {
+            if (currentLine) formattedLines.push(currentLine);
+            currentLine = word;
+          }
+        });
+        if (currentLine) formattedLines.push(currentLine);
+      });
+
+      return formattedLines.length > 0 ? formattedLines : [''];
+    }
+
+    function savePairedEntry() {
+      const title = document.getElementById('entryTitle').value.trim() || 'Untitled Reflection';
+      const userName = document.getElementById('userNameInput').value.trim();
+
+      const newEntry = {
+        id: Date.now().toString(),
+        date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+        userName: userName,
+        title: title,
+        unhealthy: JSON.parse(JSON.stringify(currentSession.unhealthy)),
+        healthy: JSON.parse(JSON.stringify(currentSession.healthy))
+      };
+
+      savedEntries.unshift(newEntry);
+      localStorage.setItem('fruitToRoot_entries', JSON.stringify(savedEntries));
+      
+      updateSavedCount();
+      showToast('Reflection saved!');
+    }
+
+    function loadSavedEntriesFromStorage() {
+      try {
+        const raw = localStorage.getItem('fruitToRoot_entries');
+        savedEntries = raw ? JSON.parse(raw) : [];
+      } catch (e) {
+        savedEntries = [];
+      }
+      updateSavedCount();
+    }
+
+    function updateSavedCount() {
+      document.getElementById('savedCount').innerText = savedEntries.length;
+    }
+
+    function toggleSavedDrawer() {
+      const drawer = document.getElementById('savedDrawer');
+      if (drawer.classList.contains('hidden')) {
+        drawer.classList.remove('hidden');
+        renderSavedList();
+      } else {
+        drawer.classList.add('hidden');
+      }
+    }
+
+    function renderSavedList() {
+      const container = document.getElementById('savedList');
+      const query = (document.getElementById('searchInput').value || '').toLowerCase();
+
+      const filtered = savedEntries.filter(item => 
+        item.title.toLowerCase().includes(query) ||
+        item.date.toLowerCase().includes(query) ||
+        (item.unhealthy && item.unhealthy.fruits.some(f => f.toLowerCase().includes(query))) ||
+        (item.healthy && item.healthy.fruits.some(f => f.toLowerCase().includes(query)))
+      );
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-10 text-slate-400">
+            <i data-lucide="inbox" class="w-10 h-10 mx-auto mb-2 opacity-50"></i>
+            <p class="text-xs">No saved reflections found.</p>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      container.innerHTML = filtered.map(item => `
+        <div class="p-3.5 bg-white rounded-xl border border-slate-200 hover:border-[#0D8274] transition shadow-sm flex flex-col gap-2">
+          <div class="flex items-start justify-between gap-2">
+            <div>
+              <span class="inline-block text-[10px] font-bold px-2 py-0.5 rounded bg-teal-100 text-[#0D8274] mb-1">
+                Paired Session
+              </span>
+              <h4 class="font-bold text-slate-800 text-sm leading-snug">${escapeHtml(item.title)}</h4>
+              <p class="text-[11px] text-slate-400">${item.date} ${item.userName ? '• ' + escapeHtml(item.userName) : ''}</p>
+            </div>
+            
+            <button onclick="deleteEntry('${item.id}')" class="text-slate-300 hover:text-rose-500 p-1 transition" title="Delete">
+              <i data-lucide="trash-2" class="w-4 h-4"></i>
+            </button>
+          </div>
+
+          <div class="flex flex-wrap gap-1">
+            ${item.unhealthy ? item.unhealthy.fruits.slice(0, 3).map(f => `<span class="text-[10px] bg-amber-50 text-amber-800 border border-amber-200 px-2 py-0.5 rounded-full font-medium">${escapeHtml(f)}</span>`).join('') : ''}
+            <span class="text-[10px] text-slate-400 self-center">➔</span>
+            ${item.healthy ? item.healthy.fruits.slice(0, 3).map(f => `<span class="text-[10px] bg-emerald-50 text-emerald-800 border border-emerald-200 px-2 py-0.5 rounded-full font-medium">${escapeHtml(f)}</span>`).join('') : ''}
+          </div>
+
+          <button 
+            onclick="loadEntryToEditor('${item.id}')"
+            class="mt-1 w-full py-1.5 bg-slate-50 hover:bg-teal-50 hover:text-[#0D8274] text-slate-700 font-semibold text-xs rounded-lg transition border border-slate-200 text-center"
+          >
+            Load Reflection
+          </button>
+        </div>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    function loadEntryToEditor(id) {
+      const entry = savedEntries.find(e => e.id === id);
+      if (!entry) return;
+
+      currentSession = JSON.parse(JSON.stringify(entry));
+      document.getElementById('entryTitle').value = currentSession.title || '';
+      
+      hasBeenCleared = {
+        title: true,
+        unhealthy_qWhoAmI: true, unhealthy_qWhatGodDone: true, unhealthy_qWhoIsGod: true,
+        healthy_qWhoAmI: true, healthy_qWhatGodDone: true, healthy_qWhoIsGod: true
+      };
+
+      renderStageForm();
+      updateDiagrams();
+      toggleSavedDrawer();
+      showToast('Reflection loaded!');
+    }
+
+    function deleteEntry(id) {
+      savedEntries = savedEntries.filter(e => e.id !== id);
+      localStorage.setItem('fruitToRoot_entries', JSON.stringify(savedEntries));
+      updateSavedCount();
+      renderSavedList();
+      showToast('Entry deleted');
+    }
+
+    function exportBackupJSON() {
+      if (savedEntries.length === 0) {
+        showToast('No saved entries to export');
+        return;
+      }
+
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(savedEntries, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `fruit_to_root_backup_${new Date().toISOString().slice(0,10)}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+
+      showToast('Backup JSON exported!');
+    }
+
+    function importBackupJSON(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const importedData = JSON.parse(e.target.result);
+          if (Array.isArray(importedData)) {
+            savedEntries = importedData.concat(savedEntries);
+            localStorage.setItem('fruitToRoot_entries', JSON.stringify(savedEntries));
+            updateSavedCount();
+            renderSavedList();
+            showToast('JSON Backup restored successfully!');
+          } else {
+            showToast('Invalid JSON file format');
+          }
+        } catch (err) {
+          console.error(err);
+          showToast('Failed to parse JSON file');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function openGospelExplanationModal() {
+      document.getElementById('gospelModal').classList.remove('hidden');
+    }
+
+    function closeGospelExplanationModal() {
+      document.getElementById('gospelModal').classList.add('hidden');
+    }
+
+    function showHelpModal(key) {
+      const stageConfig = STAGE_GUIDANCE[activeEditingStage] || STAGE_GUIDANCE.unhealthy;
+      const data = stageConfig[key];
+      if (!data) return;
+
+      const modalHeader = document.getElementById('helpModalHeader');
+      const modalBtn = document.getElementById('helpModalBtn');
+
+      if (activeEditingStage === 'unhealthy') {
+        modalHeader.style.backgroundColor = '#d97706';
+        modalBtn.className = 'px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold transition';
+      } else {
+        modalHeader.style.backgroundColor = '#0D8274';
+        modalBtn.className = 'px-4 py-2 bg-[#0D8274] hover:bg-[#0A685D] text-white rounded-xl text-xs font-bold transition';
+      }
+
+      document.getElementById('helpModalTitle').innerText = data.title;
+      document.getElementById('helpModalBody').innerHTML = data.body;
+      document.getElementById('helpModal').classList.remove('hidden');
+    }
+
+    function closeHelpModal() {
+      document.getElementById('helpModal').classList.add('hidden');
+    }
+
+    function triggerPrint() {
+      setPreviewView('both');
+      setTimeout(() => {
+        window.print();
+      }, 200);
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMsg');
+      toastMsg.innerText = msg;
+      
+      toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+      setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+      }, 3000);
+    }
+
+    function escapeHtml(str) {
+      return (str || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
+  </script>
+</body>
+</html>
